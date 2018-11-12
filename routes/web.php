@@ -12,9 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home_index');
 });
 Route::middleware(['login'])->group(function(){
+    //后台
     Route::get('/index','Admin\IndexController@index')->name('index');
     Route::get('/home','Admin\IndexController@home')->name('home');
     //会员
@@ -81,7 +82,19 @@ Route::get('/login','Admin\LoginController@login')->name('login');
 Route::post('/login','Admin\LoginController@dologin')->name('dologin');
 Route::get('/logout','Admin\LoginController@logout')->name('logout');
 
+Route::middleware(['home_login'])->group(function(){
+    //购物车
+    Route::get('/home/cart','Home\CartController@index')->name('cart');
+    Route::post('/home/add_cart','Home\CartController@add')->name('add_cart');
+    Route::get('/home/good_cart_ajax','Home\CartController@good_cart_ajax')->name('good_cart_ajax');
+    Route::get('/home/good_cart_add','Home\CartController@good_cart_add')->name('good_cart_add');
+    Route::get('/home/good_cart_reduce','Home\CartController@good_cart_reduce')->name('good_cart_reduce');
+    
+    Route::post('/home/cart_del','Home\CartController@delete')->name('cart_del');
 
+
+
+});
 //前台
 Route::get('/home/login','Home\LoginController@login')->name('home_login');
 Route::post('/home/dologin','Home\LoginController@dologin')->name('home_dologin');
@@ -95,20 +108,8 @@ Route::get('/home/index','Home\IndexController@index')->name('home_index');
 
 //商品
 Route::get('/home/goods_list','Home\GoodController@goods_list')->name('goods_list');
-Route::get('/home/success_cart','Home\GoodController@success_cart')->name('success_cart');
-Route::get('/home/cart','Home\GoodController@cart')->name('cart');
 Route::get('/home/item','Home\GoodController@item')->name('item');
 Route::get('/home/getGoodsSku','Home\GoodController@getGoodsSku')->name('getGoodsSku');
-//购物车
-Route::get('/home/cart','Home\CartController@index')->name('cart');
-Route::post('/home/add_cart','Home\CartController@add')->name('add_cart');
-Route::get('/home/good_cart_ajax','Home\CartController@good_cart_ajax')->name('good_cart_ajax');
-Route::get('/home/good_cart_add','Home\CartController@good_cart_add')->name('good_cart_add');
-Route::get('/home/good_cart_reduce','Home\CartController@good_cart_reduce')->name('good_cart_reduce');
-
-Route::post('/home/cart_del','Home\CartController@delete')->name('cart_del');
-
-
 
 
 
